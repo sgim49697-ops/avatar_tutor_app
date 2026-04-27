@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS document_chunks (
     token_count INT,
     source_type TEXT NOT NULL DEFAULT 'user_document',
     metadata_json JSONB NOT NULL DEFAULT '{}'::jsonb,
-    embedding VECTOR(1024),                -- BGE-M3 default dimension
+    embedding VECTOR(768),                 -- embeddinggemma default dimension
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     UNIQUE(document_id, chunk_index)
 );
@@ -227,7 +227,7 @@ CREATE TABLE IF NOT EXISTS memory_items (
     source_turn_id UUID REFERENCES session_turns(id) ON DELETE SET NULL,
     accepted_by_user BOOLEAN,
     metadata_json JSONB NOT NULL DEFAULT '{}'::jsonb,
-    embedding VECTOR(1024),
+    embedding VECTOR(768),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -290,4 +290,3 @@ SELECT DISTINCT ON (user_id, memory_type, content_text)
     source_session_id, source_turn_id, created_at, updated_at
 FROM memory_items
 ORDER BY user_id, memory_type, content_text, updated_at DESC;
-

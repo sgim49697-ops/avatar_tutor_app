@@ -35,8 +35,8 @@ uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 The app supports `MODEL_MODE=local` and attempts these integrations:
 
 - STT: `faster-whisper`
-- Embeddings: `BAAI/bge-m3` via `sentence-transformers`
-- LLM: OpenAI-compatible local endpoint for Qwen3-8B
+- Embeddings: Ollama `embeddinggemma:300m-qat-q4_0`
+- LLM: Ollama `hf.co/LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF:Q5_K_M`
 - TTS: MeloTTS via `melo.api.TTS`
 
 Install heavy model dependencies separately so the lightweight smoke tests stay quick. When installing PyTorch, use the CUDA 12.8 index:
@@ -44,6 +44,13 @@ Install heavy model dependencies separately so the lightweight smoke tests stay 
 ```bash
 uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 uv pip install faster-whisper sentence-transformers melo-tts
+```
+
+For the default Ollama LLM/RAG setup:
+
+```bash
+ollama pull embeddinggemma:300m-qat-q4_0
+ollama pull hf.co/LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF:Q5_K_M
 ```
 
 Set `MODEL_FALLBACK_ENABLED=false` if you want missing local models to fail loudly instead of returning deterministic POC fallbacks.
@@ -64,4 +71,3 @@ Open `http://localhost:3000`.
 cd backend
 uv run pytest
 ```
-

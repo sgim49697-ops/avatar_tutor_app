@@ -26,11 +26,14 @@ class Settings(BaseSettings):
     model_device: str = "cuda"
 
     stt_model_name: str = "large-v3-turbo"
-    embedding_model_name: str = "BAAI/bge-m3"
+    embedding_provider: Literal["ollama", "sentence_transformers"] = "ollama"
+    embedding_model_name: str = "embeddinggemma:300m-qat-q4_0"
+    embedding_dimensions: int = 768
+    ollama_base_url: str = "http://localhost:11434"
 
-    llm_base_url: str = "http://localhost:8001/v1"
-    llm_model_name: str = "Qwen/Qwen3-8B"
-    llm_api_key: str = "local-dev-key"
+    llm_base_url: str = "http://localhost:11434/v1"
+    llm_model_name: str = "hf.co/LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct-GGUF:Q5_K_M"
+    llm_api_key: str = "ollama"
     llm_timeout_sec: float = 60.0
 
     tts_language: str = "KR"
@@ -45,4 +48,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-

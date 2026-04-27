@@ -32,7 +32,7 @@ def _allow_fallback(settings: Settings, component: str, error: Exception) -> Non
         raise ModelUnavailable(f"{component} local model is unavailable: {error}") from error
 
 
-def _hash_embedding(text: str, dimensions: int = 1024) -> list[float]:
+def _hash_embedding(text: str, dimensions: int = 768) -> list[float]:
     values = np.zeros(dimensions, dtype=np.float32)
     words = text.split() or [text]
     for index, word in enumerate(words):
@@ -55,12 +55,14 @@ class EmbeddingService:
         start = time.perf_counter()
         if self.settings.model_mode == "mock":
             return ModelResult(
-                embedding=_hash_embedding(text),
-                model_name="mock-bge-m3",
+                embedding=_hash_embedding(text, self.settings.embedding_dimensions),
+                model_name="mock-embedding",
                 latency_ms=int((time.perf_counter() - start) * 1000),
                 fallback=True,
             )
         try:
+            if self.settings.embedding_provider == "ollama":
+                return self._embed_with_ollama(text, start)
             if self._model is None:
                 from sentence_transformers import SentenceTransformer
 
@@ -78,12 +80,42 @@ class EmbeddingService:
         except Exception as exc:  # pragma: no cover - depends on local model installation
             _allow_fallback(self.settings, "embedding", exc)
             return ModelResult(
-                embedding=_hash_embedding(text),
+                embedding=_hash_embedding(text, self.settings.embedding_dimensions),
                 model_name=f"{self.settings.embedding_model_name}:fallback",
                 latency_ms=int((time.perf_counter() - start) * 1000),
                 fallback=True,
                 error=str(exc),
             )
+
+    def _embed_with_ollama(self, text: str, start: float) -> ModelResult:
+        response = httpx.post(
+            f"{self.settings.ollama_base_url.rstrip('/')}/api/embed",
+            json={"model": self.settings.embedding_model_name, "input": text},
+            timeout=self.settings.llm_timeout_sec,
+        )
+        if response.status_code == 404:
+            response = httpx.post(
+                f"{self.settings.ollama_base_url.rstrip('/')}/api/embeddings",
+                json={"model": self.settings.embedding_model_name, "prompt": text},
+                timeout=self.settings.llm_timeout_sec,
+            )
+        response.raise_for_status()
+        payload = response.json()
+        if payload.get("embeddings"):
+            embedding = payload["embeddings"][0]
+        else:
+            embedding = payload["embedding"]
+        if len(embedding) != self.settings.embedding_dimensions:
+            raise ValueError(
+                f"Ollama embedding dimension mismatch: got {len(embedding)}, "
+                f"expected {self.settings.embedding_dimensions}"
+            )
+        return ModelResult(
+            embedding=embedding,
+            model_name=self.settings.embedding_model_name,
+            latency_ms=int((time.perf_counter() - start) * 1000),
+            fallback=False,
+        )
 
 
 class STTService:
