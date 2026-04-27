@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="2600" viewBox="0 0 1800 2600" role="img" aria-labelledby="title desc">
+  <title id="title">Avatar Tutor POC Pipeline Diagrams</title>
+  <desc id="desc">Two stacked diagrams showing the overall Avatar Tutor POC architecture and one coaching turn sequence.</desc>
+  <defs>
+    <marker id="arrowBlue" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 14 7 L 0 14 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 14 7 L 0 14 z" fill="#15803d"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 14 7 L 0 14 z" fill="#c2410c"/>
+    </marker>
+    <style>
+      .page { fill: #f7f8fb; }
+      .panel { fill: #ffffff; stroke: #d7dde8; stroke-width: 2; }
+      .panelTitle { font: 700 40px Arial, "Noto Sans KR", sans-serif; fill: #111827; }
+      .panelSub { font: 400 24px Arial, "Noto Sans KR", sans-serif; fill: #4b5563; }
+      .groupTitle { font: 700 27px Arial, "Noto Sans KR", sans-serif; fill: #111827; }
+      .boxTitle { font: 700 24px Arial, "Noto Sans KR", sans-serif; fill: #111827; }
+      .boxText { font: 400 21px Arial, "Noto Sans KR", sans-serif; fill: #374151; }
+      .smallText { font: 400 18px Arial, "Noto Sans KR", sans-serif; fill: #4b5563; }
+      .tinyText { font: 400 16px Arial, "Noto Sans KR", sans-serif; fill: #64748b; }
+      .badge { font: 700 18px Arial, "Noto Sans KR", sans-serif; fill: #ffffff; }
+      .arrowLabel { font: 700 18px Arial, "Noto Sans KR", sans-serif; fill: #1f2937; }
+      .groupBlue { fill: #eff6ff; stroke: #93c5fd; stroke-width: 2; }
+      .groupGreen { fill: #ecfdf5; stroke: #86efac; stroke-width: 2; }
+      .groupAmber { fill: #fffbeb; stroke: #fcd34d; stroke-width: 2; }
+      .groupPurple { fill: #faf5ff; stroke: #d8b4fe; stroke-width: 2; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .boxBlue { fill: #dbeafe; stroke: #60a5fa; stroke-width: 2; }
+      .boxGreen { fill: #dcfce7; stroke: #4ade80; stroke-width: 2; }
+      .boxAmber { fill: #fef3c7; stroke: #f59e0b; stroke-width: 2; }
+      .boxPurple { fill: #f3e8ff; stroke: #c084fc; stroke-width: 2; }
+      .boxRose { fill: #ffe4e6; stroke: #fb7185; stroke-width: 2; }
+      .lineBlue { stroke: #2563eb; stroke-width: 4; fill: none; marker-end: url(#arrowBlue); }
+      .lineGreen { stroke: #15803d; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .lineOrange { stroke: #c2410c; stroke-width: 4; fill: none; marker-end: url(#arrowOrange); }
+      .dash { stroke-dasharray: 12 10; }
+      .life { stroke: #94a3b8; stroke-width: 3; stroke-dasharray: 10 10; }
+      .step { fill: #1d4ed8; }
+      .note { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="1800" height="2600"/>
+  <text x="70" y="76" style="font: 800 50px Arial, 'Noto Sans KR', sans-serif; fill: #0f172a;">Real-time AI Coach Avatar POC</text>
+  <text x="70" y="116" class="panelSub">입력 → STT/RAG → LangGraph 1.0 코칭 워크플로우 → LLM 피드백 → TTS/아바타 출력</text>
+
+  <!-- Diagram 1: Overall Architecture -->
+  <rect class="panel" x="50" y="150" width="1700" height="1130" rx="20"/>
+  <text x="90" y="215" class="panelTitle">1. 전체 POC 아키텍처</text>
+  <text x="90" y="254" class="panelSub">프론트는 얇은 콘솔, 백엔드는 REST/WebSocket 경계, 모델은 교체 가능한 로컬 어댑터로 분리</text>
+
+  <rect class="groupBlue" x="90" y="305" width="430" height="790" rx="18"/>
+  <text x="120" y="355" class="groupTitle">Frontend: Next.js</text>
+  <text x="120" y="386" class="smallText">단일 POC 화면</text>
+
+  <rect class="boxBlue" x="130" y="430" width="350" height="105" rx="12"/>
+  <text x="160" y="467" class="boxTitle">Coach Turn Console</text>
+  <text x="160" y="499" class="boxText">Guest / Upload / Session</text>
+
+  <rect class="box" x="130" y="565" width="350" height="105" rx="12"/>
+  <text x="160" y="602" class="boxTitle">MediaRecorder</text>
+  <text x="160" y="634" class="boxText">audio.chunk 전송</text>
+
+  <rect class="box" x="130" y="700" width="350" height="105" rx="12"/>
+  <text x="160" y="737" class="boxTitle">Manual Transcript</text>
+  <text x="160" y="769" class="boxText">STT 없이 텍스트 턴 실행</text>
+
+  <rect class="box" x="130" y="835" width="350" height="120" rx="12"/>
+  <text x="160" y="872" class="boxTitle">Avatar Placeholder</text>
+  <text x="160" y="904" class="boxText">avatar.speak 수신</text>
+  <text x="160" y="932" class="boxText">TTS audio 재생</text>
+
+  <rect class="groupGreen" x="640" y="305" width="520" height="790" rx="18"/>
+  <text x="670" y="355" class="groupTitle">Backend: FastAPI</text>
+  <text x="670" y="386" class="smallText">REST + WebSocket + Workflow orchestration</text>
+
+  <rect class="boxGreen" x="690" y="430" width="210" height="130" rx="12"/>
+  <text x="720" y="468" class="boxTitle">REST API</text>
+  <text x="720" y="500" class="boxText">/api/auth/guest</text>
+  <text x="720" y="528" class="boxText">/api/documents</text>
+
+  <rect class="boxGreen" x="920" y="430" width="190" height="130" rx="12"/>
+  <text x="950" y="468" class="boxTitle">Sessions</text>
+  <text x="950" y="500" class="boxText">/api/sessions</text>
+  <text x="950" y="528" class="boxText">question 생성</text>
+
+  <rect class="boxGreen" x="690" y="620" width="420" height="120" rx="12"/>
+  <text x="720" y="658" class="boxTitle">WebSocket Gateway</text>
+  <text x="720" y="690" class="boxText">/ws/sessions/{session_id}</text>
+  <text x="720" y="718" class="boxText">session.init / audio.chunk / turn.end</text>
+
+  <rect class="boxAmber" x="690" y="800" width="420" height="140" rx="12"/>
+  <text x="720" y="838" class="boxTitle">LangGraph 1.0 coach_turn</text>
+  <text x="720" y="870" class="boxText">transcribe → retrieve → feedback</text>
+  <text x="720" y="898" class="boxText">→ synthesize → persist_trace</text>
+
+  <rect class="boxPurple" x="690" y="985" width="420" height="78" rx="12"/>
+  <text x="720" y="1033" class="boxTitle">/static/tts/*.wav</text>
+
+  <rect class="groupAmber" x="1260" y="305" width="400" height="790" rx="18"/>
+  <text x="1290" y="355" class="groupTitle">Local Model Adapters</text>
+  <text x="1290" y="386" class="smallText">MODEL_MODE=local, fallback 가능</text>
+
+  <rect class="boxAmber" x="1305" y="430" width="310" height="100" rx="12"/>
+  <text x="1335" y="467" class="boxTitle">Embedding</text>
+  <text x="1335" y="499" class="boxText">Ollama embeddinggemma 768d</text>
+
+  <rect class="boxAmber" x="1305" y="560" width="310" height="100" rx="12"/>
+  <text x="1335" y="597" class="boxTitle">STT</text>
+  <text x="1335" y="629" class="boxText">faster-whisper</text>
+
+  <rect class="boxAmber" x="1305" y="690" width="310" height="110" rx="12"/>
+  <text x="1335" y="727" class="boxTitle">LLM</text>
+  <text x="1335" y="759" class="boxText">Ollama EXAONE</text>
+
+  <rect class="boxAmber" x="1305" y="830" width="310" height="100" rx="12"/>
+  <text x="1335" y="867" class="boxTitle">TTS</text>
+  <text x="1335" y="899" class="boxText">MeloTTS</text>
+
+  <rect class="boxRose" x="1305" y="965" width="310" height="98" rx="12"/>
+  <text x="1335" y="1002" class="boxTitle">Fallback</text>
+  <text x="1335" y="1034" class="boxText">mock/hash/placeholder</text>
+
+  <rect class="groupPurple" x="640" y="1125" width="1020" height="95" rx="18"/>
+  <text x="675" y="1183" class="groupTitle">Persistence: 기본 MemoryRepository, DATABASE_URL 설정 시 Postgres + pgvector</text>
+
+  <path class="lineBlue" d="M 480 482 C 565 482, 600 482, 685 482"/>
+  <text x="535" y="455" class="arrowLabel">REST 요청</text>
+  <path class="lineBlue" d="M 480 618 C 565 630, 600 645, 685 665"/>
+  <text x="525" y="621" class="arrowLabel">audio.chunk</text>
+  <path class="lineBlue" d="M 480 752 C 565 760, 600 760, 685 690"/>
+  <text x="525" y="746" class="arrowLabel">turn.end</text>
+
+  <path class="lineGreen" d="M 900 560 L 900 615"/>
+  <path class="lineGreen" d="M 900 740 L 900 795"/>
+  <path class="lineGreen" d="M 1110 865 C 1185 865, 1225 610, 1300 610"/>
+  <text x="1165" y="590" class="arrowLabel">STT</text>
+  <path class="lineGreen" d="M 1110 850 C 1190 810, 1215 475, 1300 480"/>
+  <text x="1155" y="470" class="arrowLabel">RAG embed</text>
+  <path class="lineGreen" d="M 1110 870 C 1195 875, 1215 747, 1300 747"/>
+  <text x="1160" y="735" class="arrowLabel">LLM feedback</text>
+  <path class="lineGreen" d="M 1110 895 C 1190 940, 1220 880, 1300 880"/>
+  <text x="1165" y="934" class="arrowLabel">TTS</text>
+  <path class="lineOrange" d="M 900 940 L 900 980"/>
+  <path class="lineOrange" d="M 900 1065 L 900 1120"/>
+  <path class="lineOrange dash" d="M 1305 1015 C 1240 1015, 1190 1015, 1115 1015"/>
+
+  <rect class="note" x="90" y="1130" width="455" height="90" rx="14"/>
+  <text x="120" y="1168" class="boxTitle">클라이언트 수신 이벤트</text>
+  <text x="120" y="1200" class="boxText">transcript.final → feedback.generated → avatar.speak</text>
+
+  <!-- Diagram 2: One Turn Sequence -->
+  <rect class="panel" x="50" y="1340" width="1700" height="1180" rx="20"/>
+  <text x="90" y="1405" class="panelTitle">2. 한 턴 실행 시퀀스</text>
+  <text x="90" y="1444" class="panelSub">문서 업로드부터 turn.end 이후 코칭 결과가 돌아오기까지의 실제 이벤트 순서</text>
+
+  <g>
+    <rect class="boxBlue" x="90" y="1500" width="210" height="78" rx="12"/>
+    <text x="125" y="1548" class="boxTitle">Browser UI</text>
+    <line class="life" x1="195" y1="1580" x2="195" y2="2415"/>
+
+    <rect class="boxGreen" x="370" y="1500" width="210" height="78" rx="12"/>
+    <text x="422" y="1548" class="boxTitle">REST API</text>
+    <line class="life" x1="475" y1="1580" x2="475" y2="2415"/>
+
+    <rect class="boxGreen" x="650" y="1500" width="245" height="78" rx="12"/>
+    <text x="695" y="1548" class="boxTitle">WebSocket</text>
+    <line class="life" x1="772" y1="1580" x2="772" y2="2415"/>
+
+    <rect class="boxAmber" x="965" y="1500" width="240" height="78" rx="12"/>
+    <text x="995" y="1548" class="boxTitle">LangGraph</text>
+    <line class="life" x1="1085" y1="1580" x2="1085" y2="2415"/>
+
+    <rect class="boxAmber" x="1275" y="1500" width="235" height="78" rx="12"/>
+    <text x="1312" y="1548" class="boxTitle">Models</text>
+    <line class="life" x1="1392" y1="1580" x2="1392" y2="2415"/>
+
+    <rect class="boxPurple" x="1570" y="1500" width="150" height="78" rx="12"/>
+    <text x="1596" y="1548" class="boxTitle">Repo</text>
+    <line class="life" x1="1645" y1="1580" x2="1645" y2="2415"/>
+  </g>
+
+  <circle class="step" cx="110" cy="1645" r="22"/><text x="104" y="1652" class="badge">1</text>
+  <path class="lineBlue" d="M 195 1645 L 465 1645"/>
+  <text x="238" y="1627" class="arrowLabel">POST /api/auth/guest</text>
+  <path class="lineGreen" d="M 475 1678 L 1635 1678"/>
+  <text x="845" y="1660" class="arrowLabel">create_guest_user</text>
+
+  <circle class="step" cx="110" cy="1748" r="22"/><text x="104" y="1755" class="badge">2</text>
+  <path class="lineBlue" d="M 195 1748 L 465 1748"/>
+  <text x="238" y="1730" class="arrowLabel">POST /api/documents</text>
+  <path class="lineOrange" d="M 475 1782 L 1382 1782"/>
+  <text x="738" y="1764" class="arrowLabel">chunk text + embedding</text>
+  <path class="lineGreen" d="M 1392 1816 L 1635 1816"/>
+  <text x="1455" y="1798" class="arrowLabel">save chunks</text>
+
+  <circle class="step" cx="110" cy="1912" r="22"/><text x="104" y="1919" class="badge">3</text>
+  <path class="lineBlue" d="M 195 1912 L 465 1912"/>
+  <text x="238" y="1894" class="arrowLabel">POST /api/sessions</text>
+  <path class="lineGreen" d="M 475 1946 L 1635 1946"/>
+  <text x="850" y="1928" class="arrowLabel">create_session + question_text</text>
+  <path class="lineBlue dash" d="M 465 1980 L 205 1980"/>
+  <text x="235" y="2010" class="arrowLabel">session_id 반환</text>
+
+  <circle class="step" cx="110" cy="2075" r="22"/><text x="104" y="2082" class="badge">4</text>
+  <path class="lineBlue" d="M 195 2075 L 762 2075"/>
+  <text x="295" y="2057" class="arrowLabel">connect /ws/sessions/{session_id}</text>
+  <path class="lineBlue dash" d="M 762 2108 L 205 2108"/>
+  <text x="360" y="2140" class="arrowLabel">session.ready + question.generated</text>
+
+  <circle class="step" cx="110" cy="2210" r="22"/><text x="104" y="2217" class="badge">5</text>
+  <path class="lineBlue" d="M 195 2210 L 762 2210"/>
+  <text x="260" y="2192" class="arrowLabel">audio.chunk / feature.frame / turn.end</text>
+  <path class="lineGreen" d="M 772 2244 L 1075 2244"/>
+  <text x="840" y="2226" class="arrowLabel">WorkflowInput</text>
+
+  <circle class="step" cx="940" cy="2310" r="22"/><text x="934" y="2317" class="badge">6</text>
+  <path class="lineOrange" d="M 1085 2310 L 1382 2310"/>
+  <text x="1120" y="2292" class="arrowLabel">STT / embedding / LLM / TTS</text>
+  <path class="lineGreen" d="M 1085 2352 L 1635 2352"/>
+  <text x="1195" y="2385" class="arrowLabel">save traces + feedback + transcript</text>
+
+  <circle class="step" cx="940" cy="2445" r="22"/><text x="934" y="2452" class="badge">7</text>
+  <path class="lineBlue dash" d="M 1075 2445 L 782 2445"/>
+  <text x="830" y="2427" class="arrowLabel">WorkflowOutput</text>
+  <path class="lineBlue dash" d="M 762 2482 L 205 2482"/>
+  <text x="280" y="2464" class="arrowLabel">transcript.final → feedback.generated → avatar.speak</text>
+
+  <rect class="note" x="95" y="2295" width="720" height="95" rx="14"/>
+  <text x="125" y="2333" class="boxTitle">입력 선택지</text>
+  <text x="125" y="2365" class="boxText">음성 녹음이 있으면 임시 audio file → STT, transcript_final이 있으면 STT를 건너뜀</text>
+
+  <rect class="note" x="1185" y="2015" width="480" height="115" rx="14"/>
+  <text x="1215" y="2053" class="boxTitle">Fallback 정책</text>
+  <text x="1215" y="2085" class="boxText">로컬 모델이 없고 MODEL_FALLBACK_ENABLED=true면</text>
+  <text x="1215" y="2113" class="boxText">mock/hash/placeholder 결과로 POC 흐름 유지</text>
+</svg>
