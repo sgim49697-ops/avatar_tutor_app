@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: avatar-tutor-postgres
+    environment:
+      POSTGRES_USER: avatar
+      POSTGRES_PASSWORD: avatar
+      POSTGRES_DB: avatar_tutor
+    ports:
+      - "5432:5432"
+    volumes:
+      - avatar_tutor_pg:/var/lib/postgresql/data
+      - ./infra/migrations/001_initial_schema.sql:/docker-entrypoint-initdb.d/001_initial_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U avatar -d avatar_tutor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: avatar-tutor-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+
+volumes:
+  avatar_tutor_pg:
+
