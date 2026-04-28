@@ -18,7 +18,7 @@ The UI and server are intentionally thin. The important part is that the model a
 ```bash
 cd backend
 uv pip install -e ".[dev]"
-uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8010
 ```
 
 By default, the backend can run without Postgres by using the in-memory repository. To use Postgres:
@@ -27,7 +27,7 @@ By default, the backend can run without Postgres by using the in-memory reposito
 docker compose up -d postgres redis
 export DATABASE_URL=postgresql://avatar:avatar@localhost:5432/avatar_tutor
 export AUTO_MIGRATE=true
-uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8010
 ```
 
 ## Local OSS model runtime
@@ -63,7 +63,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3010`.
 
 ## Smoke Tests
 

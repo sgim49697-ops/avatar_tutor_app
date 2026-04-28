@@ -2,7 +2,7 @@
 import type { ClientEvent } from "@/types/events";
 
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "http://localhost:8010";
 
 export const WS_BASE_URL =
   process.env.NEXT_PUBLIC_WS_BASE_URL?.replace(/\/$/, "") || API_BASE_URL.replace(/^http/, "ws");
@@ -57,4 +57,3 @@ export function makeAudioUrl(audioPath: string): string {
   }
   return `${API_BASE_URL}${audioPath}`;
 }
-

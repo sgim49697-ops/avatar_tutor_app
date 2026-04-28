@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     app_name: str = "Avatar Tutor POC"
     app_env: str = "local"
-    backend_cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    backend_cors_origins: str = "http://localhost:3010,http://127.0.0.1:3010"
 
     database_url: str | None = None
     auto_migrate: bool = False
